@@ -38,7 +38,7 @@ local function shootAtClosestPlayer()
         local targetPosition = targetPlayer.Character.HumanoidRootPart.Position
         local gunPosition = Camera.CFrame.Position 
 
-        local direction = (targetPosition - gunPosition).unit * 500 -- Distance can be adjusted
+        local direction = (targetPosition - gunPosition).unit * 500
         local ray = Ray.new(gunPosition, direction)
 
         local hit, position = game.Workspace:FindPartOnRay(ray, LocalPlayer.Character, false, true)
@@ -62,7 +62,7 @@ mouse.Button1Down:Connect(function()
     isShooting = true
     while isShooting do
         shootAtClosestPlayer()
-        wait(0.01) -- Adjust wait time for firing speed
+        wait(0.01)
     end
 end)
 
