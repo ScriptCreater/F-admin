@@ -1,0 +1,71 @@
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Camera = game.Workspace.CurrentCamera
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local function getClosestPlayerToCursor()
+    local mouse = LocalPlayer:GetMouse()
+    local closestPlayer = nil
+    local closestDistance = math.huge
+
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local character = player.Character
+            local humanoidRootPart = character.HumanoidRootPart
+
+            local screenPosition, onScreen = Camera:WorldToViewportPoint(humanoidRootPart.Position)
+
+            if onScreen then
+                local cursorPosition = Vector2.new(mouse.X, mouse.Y)
+                local screenPoint = Vector2.new(screenPosition.X, screenPosition.Y)
+                local distance = (cursorPosition - screenPoint).Magnitude
+
+                if distance < closestDistance then
+                    closestDistance = distance
+                    closestPlayer = player
+                end
+            end
+        end
+    end
+
+    return closestPlayer
+end
+
+local function shootAtClosestPlayer()
+    local targetPlayer = getClosestPlayerToCursor()
+
+    if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        local targetPosition = targetPlayer.Character.HumanoidRootPart.Position
+        local gunPosition = Camera.CFrame.Position 
+
+        local direction = (targetPosition - gunPosition).unit * 500 -- Distance can be adjusted
+        local ray = Ray.new(gunPosition, direction)
+
+        local hit, position = game.Workspace:FindPartOnRay(ray, LocalPlayer.Character, false, true)
+
+        if hit and hit.Parent == targetPlayer.Character then
+            local args = {
+                [1] = targetPosition
+            }
+
+            ReplicatedStorage:WaitForChild("RemoteEvents"):WaitForChild("PlayerWeaponRemotes"):WaitForChild("ProAt_NSS"):WaitForChild("PKMShoot"):FireServer(unpack(args))
+        end
+    else
+        warn("No valid target found near the cursor.")
+    end
+end
+
+local mouse = LocalPlayer:GetMouse()
+local isShooting = false
+
+mouse.Button1Down:Connect(function()
+    isShooting = true
+    while isShooting do
+        shootAtClosestPlayer()
+        wait(0.01) -- Adjust wait time for firing speed
+    end
+end)
+
+mouse.Button1Up:Connect(function()
+    isShooting = false
+end)
