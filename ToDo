@@ -1,5 +1,6 @@
 Get NLShotgun path
 Get Glock path
-Add kick scrip
-Add get bad player (also add a fix or noti user that they have to re execute cmd)
+Add kick script that connects to bad player folder
+Add(also add a fix or noti user that they have to re execute cmd)
 Add get key (ill add checks to see if they have gamepass if they do they will auto grab one if they dont it will look for one in "game.Workspace.Livetools" if one isnt there then ask player to tye yes cmd then if they do they will become a guard and reset ill a key is dropped
+look at https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source
