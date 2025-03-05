@@ -31,16 +31,14 @@ textBox.FocusLost:Connect(function(enterPressed)
 
         if command == "test" then
             print("Hello World!")
-        elseif command == "test1" then
-            print("Hello World 1!")
-        elseif command == "test2" then
-            print("Hello World 2!")
-        elseif command == "test3" then
-            print("Hello World 3!")
         elseif command == "cmds" then
-            print("Hello World")
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/ScriptCreater/Silent-Aim/refs/heads/main/Cmds"))()
         elseif command == "silentaim" or command == "sa" then 
             print("Hello World!")
+        elseif command == "test1" then
+            print("Hello World!")
+        elseif command == "test2" then
+            print("Hello World"
         end
     else
         closeGui() -- Also close if focus is lost without pressing Enter
