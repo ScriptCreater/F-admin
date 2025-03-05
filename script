@@ -1,0 +1,60 @@
+-- Create GUI
+local player = game:GetService("Players").LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+local textBox = Instance.new("TextBox")
+local userInputService = game:GetService("UserInputService")
+
+screenGui.Parent = player:FindFirstChildOfClass("PlayerGui")
+screenGui.Enabled = false
+
+textBox.Parent = screenGui
+textBox.Size = UDim2.new(0.3, 0, 0.05, 0)
+textBox.Position = UDim2.new(0.35, 0, 0.45, 0)
+textBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+textBox.TextColor3 = Color3.fromRGB(0, 163, 203)
+textBox.Text = ""
+textBox.ClearTextOnFocus = true
+textBox.PlaceholderText = "Type cmds for commands!!!"
+textBox.PlaceholderColor3 = Color3.fromRGB(0, 163, 203) -- This makes PlaceholderText match the main text color
+
+-- Function to close GUI
+local function closeGui()
+    screenGui.Enabled = false
+    textBox.Text = ""  -- Clear text box when closing
+end
+
+-- Handle command execution
+textBox.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local command = textBox.Text:lower()
+        closeGui() -- Close GUI after input
+
+        if command == "test" then
+            print("Hello World!")
+        elseif command == "test1" then
+            print("Hello World 1!")
+        elseif command == "test2" then
+            print("Hello World 2!")
+        elseif command == "test3" then
+            print("Hello World 3!")
+        elseif command == "cmds" then
+            print("Hello World")
+        elseif command == "silentaim" or command == "sa" then 
+            print("Hello World!")
+        end
+    else
+        closeGui() -- Also close if focus is lost without pressing Enter
+    end
+end)
+
+-- Keybind to open GUI without typing ","
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.Comma then
+        screenGui.Enabled = not screenGui.Enabled  -- Toggle GUI visibility
+
+        if screenGui.Enabled then
+            task.wait() -- Small delay to prevent auto-typing ","
+            textBox:CaptureFocus()
+        end
+    end
+end)
